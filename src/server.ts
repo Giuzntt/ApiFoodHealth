@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
 
+import recipeRoutes from './routes/Recipes';
 const router = express();
 
 mongoose
@@ -42,6 +43,7 @@ const StartServer = () => {
     });
 
     //Routes
+    router.use('/recipes', recipeRoutes);
     //Heathcheck
     router.get('/ping', (req, res) => {
         res.status(200).json({ message: 'pong' });
