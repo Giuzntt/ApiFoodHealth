@@ -1,15 +1,18 @@
-import { NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
+import Categories from '../models/Categories';
 import Recipe from '../models/Recipes';
+import Categorie from './Categorie';
 
 const createRecipe = (req: any, res: any, next: NextFunction) => {
-    const { name, description, ingredients, steps, image } = req.body;
+    const { name, description, category, ingredients, instructions, image } = req.body;
     const recipe = new Recipe({
         _id: new mongoose.Types.ObjectId(),
         name,
         description,
+        category,
         ingredients,
-        steps,
+        instructions,
         image
     });
     return recipe
@@ -21,15 +24,13 @@ const readRecipe = (req: any, res: any, next: NextFunction) => {
     const recipeId = req.params.recipeId;
 
     return Recipe.findById(recipeId)
-        .populate('Recipe')
-        .select('nameCategory  descriptionCategory')
+
         .then((recipe) => (recipe ? res.status(200).json({ recipe }) : res.status(404).json({ message: 'Recipe not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
-const readAllRecipes = (req: any, res: any, next: NextFunction) => {
+const readAllRecipes = (req: Request, res: Response, next: NextFunction) => {
     return Recipe.find()
-        .populate('Recipes')
-        .select('nameCategory  descriptionCategory')
+
         .then((recipes) => res.status(200).json({ recipes }))
         .catch((error) => res.status(500).json({ error }));
 };

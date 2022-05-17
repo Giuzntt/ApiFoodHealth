@@ -12,10 +12,11 @@ export interface IRecipeModel extends IRecipe, Document {}
 
 const RecipeSchema: Schema = new Schema(
     {
+        category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
         name: { type: String, required: true },
-        description: { type: String, required: true },
-        ingredients: { type: [String], required: true },
-        instructions: { type: [String], required: true },
+        description: { type: String, required: false },
+        ingredients: { type: [String], required: false },
+        instructions: { type: [String], required: false },
         image: { type: String, required: false }
     },
     {
